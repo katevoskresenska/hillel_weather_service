@@ -8,13 +8,14 @@ jobs:
     executor: heroku/default
     steps:
       - checkout
-      - heroku/deploy-via-git:
-        branch: heroku_deployment
-        post-steps:
-          - run: python3 manage.py migrate
+      - heroku/deploy-via-git
 
 
 workflows:
-  main:
+  heroku_deploy:
     jobs:
-      - deploy
+    jobs:
+      - heroku/deploy-via-git:
+          branch: circleci-project-setup
+          post-steps:
+            - run: python3 manage.py migrate
