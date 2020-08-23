@@ -27,7 +27,7 @@ jobs:
       - run:
           name: Release web
           command: |
-             heroku login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY
+             heroku login
              heroku container:release web -a $HEROKU_APP_NAME
              
       - run:
