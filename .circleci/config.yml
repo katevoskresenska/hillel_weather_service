@@ -28,7 +28,7 @@ jobs:
           name: Release web
           command: |
              docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com
-             heroku container:release web
+             heroku container:release web -a $HEROKU_APP_NAME
              
       - run:
           name: Run migrations
@@ -38,7 +38,7 @@ jobs:
       - run:
           name: Release bot
           command: |
-             heroku container:release bot
+             heroku container:release bot -a $HEROKU_APP_NAME
              
           
 workflows:
