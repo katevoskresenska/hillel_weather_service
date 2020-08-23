@@ -19,12 +19,30 @@ jobs:
           command: |
              docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com
              docker tag registry.heroku.com/$HEROKU_APP_NAME/web registry.heroku.com/$HEROKU_APP_NAME/web:v1
-             docker push registry.heroku.com/$HEROKU_APP_NAME/web:v1
+             docker push registry.heroku.com/$HEROKU_APP_NAME/web:latest
              docker tag registry.heroku.com/$HEROKU_APP_NAME/bot registry.heroku.com/$HEROKU_APP_NAME/bot:v1
-             docker push registry.heroku.com/$HEROKU_APP_NAME/bot:v1
+             docker push registry.heroku.com/$HEROKU_APP_NAME/bot:latest
+             
       - run:
           name: Check images
           command: docker images
+          
+      - run:
+          name: Release web
+          command: |
+             heroku container:release web
+             
+       - run:
+          name: Run migrations
+          command: |
+             heroku run python3 manage.py migrate -a $HEROKU_APP_NAME
+          
+      - run:
+          name: Release bot
+          command: |
+             heroku container:release bot
+             
+          
 
 workflows:
   version: 2
