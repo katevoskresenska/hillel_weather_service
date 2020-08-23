@@ -12,9 +12,12 @@ jobs:
 
 
 workflows:
-  deploy:
+  main:
     jobs:
       - heroku/deploy-via-git:
-          branch: circleci-project-setup
+          filters:
+            branches:
+              only: circleci-project-setup
           post-steps:
             - run: python3 manage.py migrate
+            
