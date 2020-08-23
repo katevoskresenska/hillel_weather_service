@@ -14,6 +14,7 @@ jobs:
             docker build -t registry.heroku.com/$HEROKU_APP_NAME/web -f ./docker/web/Dockerfile .
             docker build -t registry.heroku.com/$HEROKU_APP_NAME/bot ./docker/bot/
 
+      - run:
           name: Deploy to Heroku
           command: |
              docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com
