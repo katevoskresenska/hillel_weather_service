@@ -12,7 +12,7 @@ jobs:
 
 
 workflows:
-  heroku_deploy:
+  deploy:
     jobs:
       - heroku/deploy-via-git:
           branch: circleci-project-setup
