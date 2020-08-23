@@ -23,25 +23,7 @@ jobs:
       - run:
           name: Check images
           command: docker images
-          
-      - run:
-          name: Release web
-          command: |
-             heroku login
-             heroku container:release web -a $HEROKU_APP_NAME
-             
-      - run:
-          name: Run migrations
-          command: |
-             heroku run python3 manage.py migrate -a $HEROKU_APP_NAME
-          
-      - run:
-          name: Release bot
-          command: |
-             heroku login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY          
-             heroku container:release bot -a $HEROKU_APP_NAME
-             
-          
+   
 workflows:
   version: 2
   main:
