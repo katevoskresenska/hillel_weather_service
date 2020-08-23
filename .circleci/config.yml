@@ -13,7 +13,6 @@ jobs:
           command: |
             docker build -t registry.heroku.com/$HEROKU_APP_NAME/web -f ./docker/web/Dockerfile .
             docker build -t registry.heroku.com/$HEROKU_APP_NAME/bot ./docker/bot/
-
       - run:
           name: Deploy to Heroku
           command: |
@@ -32,7 +31,7 @@ jobs:
           command: |
              heroku container:release web
              
-       - run:
+      - run:
           name: Run migrations
           command: |
              heroku run python3 manage.py migrate -a $HEROKU_APP_NAME
@@ -43,7 +42,6 @@ jobs:
              heroku container:release bot
              
           
-
 workflows:
   version: 2
   main:
@@ -52,4 +50,3 @@ workflows:
           filters:
             branches:
               only: circleci-project-setup
-            
