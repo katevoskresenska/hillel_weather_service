@@ -1,0 +1,20 @@
+version: 2.1
+
+orbs:
+  heroku: circleci/heroku@1.2.2
+
+jobs:
+  deploy:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/deploy-via-git:
+        branch: heroku_deployment
+        post-steps:
+          - run: python3 manage.py migrate
+
+
+workflows:
+  main:
+    jobs:
+      - deploy
