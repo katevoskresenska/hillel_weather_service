@@ -1,23 +1,34 @@
-version: 2.1
-
-orbs:
-  heroku: circleci/heroku@1.2.2
-
+version: 2
 jobs:
-  deploy:
-    executor: heroku/default
+  build:
+    machine: true
+
+    working_directory: ~/weather_web
+
     steps:
       - checkout
-      - heroku/deploy-via-git
 
+      - run:
+          name: Build Docker image
+          command: |
+            docker build -t registry.heroku.com/$HEROKU_APP_NAME/web -f ./docker/web/Dockerfile .
+            docker build -t registry.heroku.com/$HEROKU_APP_NAME/bot ./docker/bot/
+
+          name: Deploy to Heroku
+          command: |
+             docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com
+             docker push registry.heroku.com/$HEROKU_APP_NAME_BOT/web
+             docker push registry.heroku.com/$HEROKU_APP_NAME_WEB/bot
+      - run:
+          name: Check images
+          command: docker images
 
 workflows:
+  version: 2
   main:
     jobs:
-      - heroku/deploy-via-git:
+      - build:
           filters:
             branches:
               only: circleci-project-setup
-          post-steps:
-            - run: python3 manage.py migrate
             
